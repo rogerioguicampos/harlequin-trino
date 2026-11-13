@@ -63,6 +63,11 @@ If your trino instance requires a password you can set the `--require_auth` flag
 harlequin -a trino -h localhost -p 8080 -U my_user --password my-pass --require_auth password 
 ```
 
+If your trino instance uses OAuth2 (external authentication), set the `--require_auth` flag to oauth2. A browser window opens to log in, and the token is cached in the system keyring if `keyring` is installed
+```bash
+harlequin -a trino -h trino.example.com -p 443 --require_auth oauth2
+```
+
 Many more options are available; to see the full list, run:
 
 ```bash
