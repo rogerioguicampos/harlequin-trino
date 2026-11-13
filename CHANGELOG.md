@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Features
+
+-   Add OAuth2 (external authentication) support with `--require_auth oauth2`.
+-   Require `trino>=0.330.0`, which parses the multi-valued `WWW-Authenticate` header sent by Trino servers with OAuth2 enabled ([trinodb/trino-python-client#484](https://github.com/trinodb/trino-python-client/issues/484)).
+
 ## [0.1.6] - 2025-07-29
 
 ### Fixes

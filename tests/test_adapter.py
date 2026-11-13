@@ -8,6 +8,7 @@ from harlequin.exception import HarlequinQueryError
 from harlequin_trino.adapter import HarlequinTrinoAdapter, HarlequinTrinoConnection
 from textual_fastdatatable.backend import create_backend
 
+from trino.auth import OAuth2Authentication
 from trino.dbapi import connect
 
 if sys.version_info < (3, 10):
@@ -37,6 +38,15 @@ def test_connect(trino_options: dict) -> None:
 
 def test_init_extra_kwargs(trino_options: dict) -> None:
     assert HarlequinTrinoAdapter(**trino_options, foo=1, bar="baz").connect()
+
+
+def test_oauth2_auth_option() -> None:
+    # connect() does not reach the server, so no OAuth2 flow is started here
+    conn = HarlequinTrinoAdapter(
+        host="trino.example.com", port=443, require_auth="oauth2"
+    ).connect()
+    assert isinstance(conn.conn.auth, OAuth2Authentication)
+    assert conn.conn.http_scheme == "https"
 
 
 @pytest.fixture

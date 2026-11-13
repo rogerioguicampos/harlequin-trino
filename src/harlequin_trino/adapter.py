@@ -16,7 +16,7 @@ from textual_fastdatatable.backend import AutoBackendType
 
 from harlequin_trino.cli_options import TRINO_OPTIONS
 from harlequin_trino.completions import load_completions
-from trino.auth import BasicAuthentication, JWTAuthentication
+from trino.auth import BasicAuthentication, JWTAuthentication, OAuth2Authentication
 from trino.dbapi import connect
 
 
@@ -103,6 +103,15 @@ class HarlequinTrinoConnection(HarlequinConnection):
             modified_options["auth"] = JWTAuthentication(credentials.token)
             modified_options["http_scheme"] = "https"
             modified_options["verify"] = True
+            modified_options["schema"] = schema
+            modified_options["catalog"] = catalog
+
+        elif auth == "oauth2":
+            # Trino OAuth2 "external authentication": the login URL is opened in a
+            # browser and the token is cached in the system keyring (if installed).
+            modified_options["auth"] = OAuth2Authentication()
+            modified_options["http_scheme"] = "https"
+            modified_options["verify"] = sslcert if sslcert else True
             modified_options["schema"] = schema
             modified_options["catalog"] = catalog
 
